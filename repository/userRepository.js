@@ -1,28 +1,30 @@
-const mongoURI =
-  "mongodb+srv://adityabasak360:Aditya_1234@cluster0.icftfll.mongodb.net/expense-tracker";
-// Connect to MongoDB
-await mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-console.log("MongoDB connected...");
+const User = require("../models/user");
+const { connectMongoDB, disconnectDb } = require("./connectDB");
 
 const findUser = async (loginDetails) => {
-  return await User.findOne({
-    email: loginDetails.email,
-    password: loginDetails.password,
-  });
+  try {
+    await connectMongoDB();
+    return await User.findOne({
+      email: loginDetails.email,
+      password: loginDetails.password,
+    });
+  } catch (error) {
+    throw error;
+  } finally {
+    disconnectDb();
+  }
 };
 
 const registerNewUser = async (userData) => {
   try {
+    await connectMongoDB();
     const newuser = new User(userData);
     await newuser.save();
   } catch (error) {
     throw error;
   } finally {
-    await mongoose.disconnect();
+    disconnectDb();
   }
 };
 
-module.exports = { registerNewUser };
+module.exports = { registerNewUser, findUser };

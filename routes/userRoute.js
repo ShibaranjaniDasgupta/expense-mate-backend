@@ -1,6 +1,5 @@
 const express = require("express");
-const User = require("../models/user");
-const { registerNewUser } = require("../repository/userRepository");
+const { registerNewUser, findUser } = require("../repository/userRepository");
 
 const router = express.Router();
 

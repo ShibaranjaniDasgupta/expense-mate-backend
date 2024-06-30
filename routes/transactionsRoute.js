@@ -1,6 +1,6 @@
 const dayjs = require("dayjs");
 const express = require("express");
-const Transaction = require("../models/Transactions");
+const Transaction = require("../models/transactions");
 
 const router = express.Router();
 
