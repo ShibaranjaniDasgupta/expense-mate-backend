@@ -1,14 +1,12 @@
 const express = require("express");
-const User = require("../models/User");
+const User = require("../models/user");
+const { registerNewUser } = require("../repository/userRepository");
 
 const router = express.Router();
 
 router.post("/login", async function (req, res) {
   try {
-    const result = await User.findOne({
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const result = findUser(req.body);
     console.log(result);
     if (result) {
       res.send(result);
@@ -22,8 +20,7 @@ router.post("/login", async function (req, res) {
 
 router.post("/register", async function (req, res) {
   try {
-    const newuser = new User(req.body);
-    await newuser.save();
+    registerNewUser(req.body);
     res.send("User registered successfully");
   } catch (error) {
     res.status(500).json(error);
